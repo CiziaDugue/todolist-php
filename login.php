@@ -9,7 +9,7 @@
 
 		//Vérification du mot de passe
 
-		require_once 'pdoCizia/pdodbconfig.php';
+		require_once 'pdoCerise/pdodbconfig.php';
 
 		try {
 			$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -23,22 +23,22 @@
 			$q->setFetchMode(PDO::FETCH_ASSOC);
 
 			$row = $q->fetch();
-			
+
 			//Vérification mot de passe
 			if ($_SESSION['password'] == $row['password']){
-			
+
 				$_SESSION['userData'] = array(htmlspecialchars($row['id']), htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
-				
+
 				header('Location: home.php');
 				exit();
 			}
-			
+
 			else {
 				header('Location: index.php');
 				exit();
 			}
         }
-		
+
 		/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
 		catch (PDOException $pe) {
 			die("Could not connect to the database $dbname :" . $pe->getMessage());

@@ -5,8 +5,8 @@
 	if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['password'])) {
 
 		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
-		
-		require_once 'pdoCizia/pdodbconfig.php';
+
+		require_once 'pdoCerise/pdodbconfig.php';
 
         try {
             //Connexion
@@ -35,23 +35,23 @@
 				echo('<div>Un nouvel utilisateur a été ajouté : '.$_SESSION['userData'][1].'</div>');
 
 				$req = null;
-				
+
 				//Récupération de l'id du user
-				
+
 				$sql = 'SELECT id FROM users WHERE mail = "' . $_SESSION['userData'][2] . '";';
 
 				$q = $bdd->query($sql);
 				$q->setFetchMode(PDO::FETCH_ASSOC);
 
 				$row = $q->fetch();
-				
+
 				array_unshift($_SESSION['userData'], htmlspecialchars($row['id']));
-				
+
 				print_r($_SESSION['userData']);
-				
+
 				$bdd = null;
-				
-				header('Location : home.php');
+
+				header('Location: home.php');
 				exit();
 			}
 
