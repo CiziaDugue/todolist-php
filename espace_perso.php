@@ -43,11 +43,33 @@
 	//Récupération des données utilisateur pour la connexion
 	elseif (isset($_POST['email']) && isset($_POST['password'])) {
 		
-		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
+		$_SESSION['email'] = htmlspecialchars($_POST['email']);
+		$_SESSION['password'] = htmlspecialchars($_POST['password']);
 		
 		//Vérification du mot de passe
+		require_once 'pdo/pdo0dbconfig.php';
 		
-		//Accès aux données user en bdd
+		try {
+			$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+			echo "Connected to $dbname at $host successfully.";
+
+			/*$sql = 'SELECT password FROM users WHERE mail = \'' . $_SESSION['email'] . '\'';
+
+			$q = $conn->query($sql);
+			$q->setFetchMode(PDO::FETCH_ASSOC);*/
+
+			//Accès aux données user en bdd
+			
+			$sql = 'SELECT lastName, firstName, mail, password FROM users WHERE mail = "' . $_SESSION['email'] . '"';
+
+			$q = $conn->query($sql);
+			$q->setFetchMode(PDO::FETCH_ASSOC);
+        }
+
+            /*Si erreur ou exception, interception du message*/
+		catch (PDOException $pe) {
+			die("Could not connect to the database $dbname :" . $pe->getMessage());
+		}
 	}
 ?>
 
@@ -66,10 +88,31 @@
     <body>
 		<header>
 			<h1>TO DO LIST</h1>
-			<h1>Bonjour <?php echo $_SESSION['userData'][1] . ' ' . $_SESSION['userData'][0] . '!' ?></h1>
+			<h2>Bonjour <?php echo $_SESSION['userData'][1] . ' ' . $_SESSION['userData'][0] . '!' ?></h2>
 		</header>
         <section class="container">
-
+			<div id="container">
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Prénom</th>
+							<th>Email</th>
+							<th>Password</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php while ($row = $q->fetch()): ?>
+							<tr>
+								<td><?php echo htmlspecialchars($row['lastName']) ?></td>
+								<td><?php echo htmlspecialchars($row['firstName']); ?></td>
+								<td><?php echo htmlspecialchars($row['mail']); ?></td>
+								<td><?php echo htmlspecialchars($row['password']); ?></td>
+							</tr>
+						<?php endwhile; ?>
+					</tbody>
+				</table>
+        	</div>
         </section>
 
         <script type="text/javascript" src="js/login.js"></script>
