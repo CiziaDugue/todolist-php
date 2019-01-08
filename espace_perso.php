@@ -47,6 +47,7 @@
 		$_SESSION['password'] = htmlspecialchars($_POST['password']);
 
 		//Vérification du mot de passe
+
 		require_once 'pdoCerise/pdodbconfig.php';
 
 		try {
@@ -68,7 +69,14 @@
 			$row = $q->fetch();
 
 			$_SESSION['userData'] = array(htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
-        }
+
+			$sql1 = 'SELECT label
+				FROM toDoLists
+				ORDER BY id';
+
+			$q = $conn->query($sql1);
+			$q->setFetchMode(PDO::FETCH_ASSOC);
+		}
 
             /*Si erreur ou exception, interception du message*/
 		catch (PDOException $pe) {
@@ -95,27 +103,43 @@
 			<h2>Bonjour <?php echo $_SESSION['userData'][1] . ' ' . $_SESSION['userData'][0] . '!' ?></h2>
 		</header>
         <section class="container">
-			<div id="container">
-				<table class="table table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th>Nom</th>
-							<th>Prénom</th>
-							<th>Email</th>
-							<th>Password</th>
-						</tr>
-					</thead>
-					<tbody>
+					<div id="container">
+						<table class="table table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>Nom</th>
+									<th>Prénom</th>
+									<th>Email</th>
+									<th>Password</th>
+								</tr>
+							</thead>
+							<tbody>
 
-							<tr>
-								<td><?php echo $_SESSION['userData'][0]; ?></td>
-								<td><?php echo $_SESSION['userData'][1]; ?></td>
-								<td><?php echo $_SESSION['userData'][2]; ?></td>
-								<td><?php echo $_SESSION['userData'][3]; ?></td>
-							</tr>
+									<tr>
+										<td><?php echo $_SESSION['userData'][0]; ?></td>
+										<td><?php echo $_SESSION['userData'][1]; ?></td>
+										<td><?php echo $_SESSION['userData'][2]; ?></td>
+										<td><?php echo $_SESSION['userData'][3]; ?></td>
+									</tr>
 
-					</tbody>
-				</table>
+							</tbody>
+						</table>
+						<h5>listes personnelles</h5>
+						<table class="table table-bordered table-condensed">
+								<thead>
+										<tr>
+
+												<th>Nom</th>
+										</tr>
+								</thead>
+								<tbody>
+										<?php while ($row = $q->fetch()): ?>
+												<tr>
+														<td><?php echo htmlspecialchars($row['label']); ?></td>
+												</tr>
+										<?php endwhile; ?>
+								</tbody>
+						</table>
         	</div>
         </section>
 
