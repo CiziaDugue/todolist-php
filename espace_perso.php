@@ -1,9 +1,9 @@
 <?php
 	session_start();
-	
+
 	//Récupération des données utilisateur pour l'inscription
 	if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['password'])) {
-		
+
 		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
 		
 		require_once 'pdoCizia/pdo0dbconfig.php';
@@ -11,14 +11,14 @@
         try {
             //Connexion
             $bdd = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-            
+
 			//Vérif si mail existant & ajout en bdd ou retour au formulaire
 			$mail_exists = $bdd->prepare('SELECT COUNT(*) FROM users WHERE mail = "' . $_SESSION['userData'][2] . '";');
-			
+
 			$mail_exists->execute();
-			
+
 			if (!$mail_exists->fetchColumn()) {
-			
+
 				//Préparation de la requête insert
 				$req = $bdd->prepare('INSERT INTO users (lastName, firstName, mail, password)'
 				.' VALUES (:lastName, :firstName, :mail, :password)');
@@ -52,12 +52,12 @@
 				$bdd = null;
 				
 			}
-			
+
 			else {
 				header('Location: index.html');
 				exit();
 			}
-        } 
+        }
         catch (PDOException $e) {
             print "Erreur : " . $e->getMessage() . "<br/>";
             die();
@@ -66,24 +66,25 @@
 
 	//Récupération des données utilisateur pour la connexion
 	elseif (isset($_POST['email']) && isset($_POST['password'])) {
-		
+
 		$_SESSION['email'] = htmlspecialchars($_POST['email']);
 		$_SESSION['password'] = htmlspecialchars($_POST['password']);
-		
+
 		//Vérification du mot de passe
-		require_once 'pdoCizia/pdo0dbconfig.php';
-		
+
+		require_once 'pdoCerise/pdodbconfig.php';
+
 		try {
 			$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 			echo "Connected to $dbname at $host successfully.";
 
 			//Accès aux données user en bdd
-			
+
 			$sql = 'SELECT id, lastName, firstName, mail, password FROM users WHERE mail = "' . $_SESSION['email'] . '"';
 
 			$q = $conn->query($sql);
 			$q->setFetchMode(PDO::FETCH_ASSOC);
-			
+
 			$row = $q->fetch();
 			
 			//Vérification mot de passe
@@ -100,6 +101,28 @@
 			}
         }
 
+			$_SESSION['userData'] = array(htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
+
+			$sql1 = 'SELECT label
+				FROM toDoLists
+				ORDER BY id';
+
+			$q = $conn->query($sql1);
+			$q->setFetchMode(PDO::FETCH_ASSOC);
+		}
+
+
+	//Vérification mot de passe
+	if ($_SESSION['password'] == $row['password']){
+
+		$_SESSION['userData'] = array(htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
+	}
+
+else {
+	header('Location: index.html');
+	exit();
+}
+	}
             /*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
 		catch (PDOException $pe) {
 			die("Could not connect to the database $dbname :" . $pe->getMessage());
@@ -127,27 +150,43 @@
 			<h2>Bonjour <?php echo $_SESSION['userData'][1] . ' ' . $_SESSION['userData'][0] . '!' ?></h2>
 		</header>
         <section class="container">
-			<div id="container">
-				<table class="table table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th>Nom</th>
-							<th>Prénom</th>
-							<th>Email</th>
-							<th>Password</th>
-						</tr>
-					</thead>
-					<tbody>
-						
-						<tr>
-							<td><?php echo $_SESSION['userData'][0]; ?></td>
-							<td><?php echo $_SESSION['userData'][1]; ?></td>
-							<td><?php echo $_SESSION['userData'][2]; ?></td>
-							<td><?php echo $_SESSION['userData'][3]; ?></td>
-						</tr>
-						
-					</tbody>
-				</table>
+					<div id="container">
+						<table class="table table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>Nom</th>
+									<th>Prénom</th>
+									<th>Email</th>
+									<th>Password</th>
+								</tr>
+							</thead>
+							<tbody>
+
+									<tr>
+										<td><?php echo $_SESSION['userData'][0]; ?></td>
+										<td><?php echo $_SESSION['userData'][1]; ?></td>
+										<td><?php echo $_SESSION['userData'][2]; ?></td>
+										<td><?php echo $_SESSION['userData'][3]; ?></td>
+									</tr>
+
+							</tbody>
+						</table>
+						<h5>listes personnelles</h5>
+						<table class="table table-bordered table-condensed">
+								<thead>
+										<tr>
+
+												<th>Nom</th>
+										</tr>
+								</thead>
+								<tbody>
+										<?php while ($row = $q->fetch()): ?>
+												<tr>
+														<td><?php echo htmlspecialchars($row['label']); ?></td>
+												</tr>
+										<?php endwhile; ?>
+								</tbody>
+						</table>
         	</div>
         </section>
 
