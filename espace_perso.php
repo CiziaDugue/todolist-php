@@ -1,20 +1,20 @@
 <?php
 	session_start();
-	
+
 	//Récupération des données utilisateur pour l'inscription
 	if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['password'])) {
-		
+
 		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
-		
+
 		//Vérif si user déjà en bdd
-		
+
 		//Ajout en bdd
-		require_once 'pdo/pdo0dbconfig.php';
+		require_once 'pdoCerise/pdodbconfig.php';
 
         try {
             //Connexion
             $bdd = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-            
+
             //Préparation de la requête
             $req = $bdd->prepare('INSERT INTO users (lastName, firstName, mail, password)'
             .' VALUES (:lastName, :firstName, :mail, :password)');
@@ -26,14 +26,14 @@
 				'mail' => $_SESSION['userData'][2],
 				'password' => $_SESSION['userData'][3]
             ));
-			
+
             //Affichage du résultat
             echo('<div>Un nouvel utilisateur a été ajouté : '.$_SESSION['userData'][1].'</div>');
 
             $req = null;
-            
+
             $bdd = null;
-        } 
+        }
         catch (PDOException $e) {
             print "Erreur : " . $e->getMessage() . "<br/>";
             die();
@@ -42,13 +42,13 @@
 
 	//Récupération des données utilisateur pour la connexion
 	elseif (isset($_POST['email']) && isset($_POST['password'])) {
-		
+
 		$_SESSION['email'] = htmlspecialchars($_POST['email']);
 		$_SESSION['password'] = htmlspecialchars($_POST['password']);
-		
+
 		//Vérification du mot de passe
-		require_once 'pdo/pdo0dbconfig.php';
-		
+		require_once 'pdoCerise/pdodbconfig.php';
+
 		try {
 			$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 			echo "Connected to $dbname at $host successfully.";
@@ -59,7 +59,7 @@
 			$q->setFetchMode(PDO::FETCH_ASSOC);*/
 
 			//Accès aux données user en bdd
-			
+
 			$sql = 'SELECT lastName, firstName, mail, password FROM users WHERE mail = "' . $_SESSION['email'] . '"';
 
 			$q = $conn->query($sql);
