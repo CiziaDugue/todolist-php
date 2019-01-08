@@ -9,7 +9,7 @@
 		//Vérif si user déjà en bdd
 		
 		//Ajout en bdd
-		require_once 'pdo/pdo0dbconfig.php';
+		require_once 'pdoCizia/pdo0dbconfig.php';
 
         try {
             //Connexion
@@ -47,7 +47,7 @@
 		$_SESSION['password'] = htmlspecialchars($_POST['password']);
 		
 		//Vérification du mot de passe
-		require_once 'pdo/pdo0dbconfig.php';
+		require_once 'pdoCizia/pdo0dbconfig.php';
 		
 		try {
 			$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -64,6 +64,10 @@
 
 			$q = $conn->query($sql);
 			$q->setFetchMode(PDO::FETCH_ASSOC);
+			
+			$row = $q->fetch();
+			
+			$_SESSION['userData'] = array(htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
         }
 
             /*Si erreur ou exception, interception du message*/
@@ -102,14 +106,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php while ($row = $q->fetch()): ?>
+						
 							<tr>
-								<td><?php echo htmlspecialchars($row['lastName']) ?></td>
-								<td><?php echo htmlspecialchars($row['firstName']); ?></td>
-								<td><?php echo htmlspecialchars($row['mail']); ?></td>
-								<td><?php echo htmlspecialchars($row['password']); ?></td>
+								<td><?php echo $_SESSION['userData'][0]; ?></td>
+								<td><?php echo $_SESSION['userData'][1]; ?></td>
+								<td><?php echo $_SESSION['userData'][2]; ?></td>
+								<td><?php echo $_SESSION['userData'][3]; ?></td>
 							</tr>
-						<?php endwhile; ?>
+						
 					</tbody>
 				</table>
         	</div>
