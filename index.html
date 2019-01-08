@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf-8">
         <link href='css/style.css' rel='stylesheet' type='text/css'>
@@ -27,29 +27,29 @@
                             <form action="espace_perso.php" method="post">
                                 <div class="top_row">
                                     <div class="field_wrap">
-                                        <input type="text" required autocomplete="off" placeholder="Nom *"/>
+                                        <input type="text" required autocomplete="off" name="nom" placeholder="Nom *"/>
                                     </div>
                                     <div class="field_wrap">
-                                        <input type="text" required autocomplete="off" placeholder="Prénom *"/>
+                                        <input type="text" required autocomplete="off" name="prenom" placeholder="Prénom *"/>
                                     </div>
                                 </div>
                                 <div class="field_wrap">
-                                    <input type="email"required autocomplete="off" placeholder="Email *"/>
+                                    <input type="email"required autocomplete="off" name="email" placeholder="Email *"/>
                                 </div>
                                 <div class="field_wrap">
-                                    <input type="text" required autocomplete="off" placeholder="Mot de passe *"/>
+                                    <input type="text" required autocomplete="off" name="password" placeholder="Mot de passe *"/>
                                 </div>
                                 <input type="submit" class="button button_block" value="Inscription">
                             </form>
                         </div>
                         <div id="logIn">
                         
-                            <form action="" method="post">
+                            <form action="espace_perso.php" method="post">
                                 <div class="field_wrap">
-                                    <input type="email" placeholder="Adresse eMail *">
+                                    <input type="email" name="email" placeholder="Adresse eMail *">
                                 </div>
                                 <div class="field_wrap">
-                                    <input type="password" placeholder="Mot de passe *">
+                                    <input type="password" name="password" placeholder="Mot de passe *">
                                 </div>
 
                                 <p class="oubli"><a href="#">mot de passe oublié?</a></p>
