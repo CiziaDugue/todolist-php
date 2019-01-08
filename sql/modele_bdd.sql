@@ -7,9 +7,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` smallint(5) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `firstName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
-  `mail` varchar(255) NOT NULL,
+  `mail` varchar(255) UNIQUE NOT NULL,
   `password` varchar(12) NOT NULL,
-  UNIQUE KEY `mail` (`mail`)
 );
 
 /*Table des to do lists*/

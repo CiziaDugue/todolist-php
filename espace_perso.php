@@ -6,9 +6,6 @@
 		
 		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
 		
-		//Vérif si user déjà en bdd
-		
-		//Ajout en bdd
 		require_once 'pdoCizia/pdo0dbconfig.php';
 
         try {
@@ -38,8 +35,22 @@
 				echo('<div>Un nouvel utilisateur a été ajouté : '.$_SESSION['userData'][1].'</div>');
 
 				$req = null;
+				
+				//Récupération de l'id du user
+				
+				$sql = 'SELECT id FROM users WHERE mail = "' . $_SESSION['userData'][2] . '";';
 
+				$q = $bdd->query($sql);
+				$q->setFetchMode(PDO::FETCH_ASSOC);
+
+				$row = $q->fetch();
+				
+				array_unshift($_SESSION['userData'], htmlspecialchars($row['id']));
+				
+				print_r($_SESSION['userData']);
+				
 				$bdd = null;
+				
 			}
 			
 			else {
@@ -78,7 +89,9 @@
 			//Vérification mot de passe
 			if ($_SESSION['password'] == $row['password']){
 			
-				$_SESSION['userData'] = array(htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
+				$_SESSION['userData'] = array(htmlspecialchars($row['id']), htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
+				
+				print_r($_SESSION['userData']);
 			}
 			
 			else {
