@@ -15,24 +15,37 @@
             //Connexion
             $bdd = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-            //Préparation de la requête
-            $req = $bdd->prepare('INSERT INTO users (lastName, firstName, mail, password)'
-            .' VALUES (:lastName, :firstName, :mail, :password)');
+			//Vérif si mail existant & ajout en bdd ou retour au formulaire
+			$mail_exists = $bdd->prepare('SELECT COUNT(*) FROM users WHERE mail = "' . $_SESSION['userData'][2] . '";');
 
-            //Requête SQL
-            $req->execute(array(
-				'lastName' => $_SESSION['userData'][0],
-				'firstName' => $_SESSION['userData'][1],
-				'mail' => $_SESSION['userData'][2],
-				'password' => $_SESSION['userData'][3]
-            ));
+			$mail_exists->execute();
 
-            //Affichage du résultat
-            echo('<div>Un nouvel utilisateur a été ajouté : '.$_SESSION['userData'][1].'</div>');
+			if (!$mail_exists->fetchColumn()) {
 
-            $req = null;
+				//Préparation de la requête insert
+				$req = $bdd->prepare('INSERT INTO users (lastName, firstName, mail, password)'
+				.' VALUES (:lastName, :firstName, :mail, :password)');
 
-            $bdd = null;
+				//Requête SQL
+				$req->execute(array(
+					'lastName' => $_SESSION['userData'][0],
+					'firstName' => $_SESSION['userData'][1],
+					'mail' => $_SESSION['userData'][2],
+					'password' => $_SESSION['userData'][3]
+				));
+
+				//Affichage du résultat
+				echo('<div>Un nouvel utilisateur a été ajouté : '.$_SESSION['userData'][1].'</div>');
+
+				$req = null;
+
+				$bdd = null;
+			}
+
+			else {
+				header('Location: index.html');
+				exit();
+			}
         }
         catch (PDOException $e) {
             print "Erreur : " . $e->getMessage() . "<br/>";
@@ -54,19 +67,15 @@
 			$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 			echo "Connected to $dbname at $host successfully.";
 
-			/*$sql = 'SELECT password FROM users WHERE mail = \'' . $_SESSION['email'] . '\'';
-
-			$q = $conn->query($sql);
-			$q->setFetchMode(PDO::FETCH_ASSOC);*/
-
 			//Accès aux données user en bdd
 
-			$sql = 'SELECT lastName, firstName, mail, password FROM users WHERE mail = "' . $_SESSION['email'] . '"';
+			$sql = 'SELECT id, lastName, firstName, mail, password FROM users WHERE mail = "' . $_SESSION['email'] . '"';
 
 			$q = $conn->query($sql);
 			$q->setFetchMode(PDO::FETCH_ASSOC);
 
 			$row = $q->fetch();
+
 
 			$_SESSION['userData'] = array(htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
 
@@ -78,9 +87,23 @@
 			$q->setFetchMode(PDO::FETCH_ASSOC);
 		}
 
-            /*Si erreur ou exception, interception du message*/
+
+	//Vérification mot de passe
+	if ($_SESSION['password'] == $row['password']){
+
+		$_SESSION['userData'] = array(htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
+	}
+
+else {
+	header('Location: index.html');
+	exit();
+}
+	}
+            /*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
 		catch (PDOException $pe) {
 			die("Could not connect to the database $dbname :" . $pe->getMessage());
+			header('Location: index.html');
+			exit();
 		}
 	}
 ?>
