@@ -56,7 +56,10 @@
 			}
 
 			else {
-				header('Location: index.php');
+				//Si mauvaise adresse mail
+				$message = '<div class="alert alert-warning" role="alert">Adresse mail déjà prise!</div>';
+				//Redirection
+				header("Location: index.php?message=$message");
 				exit();
 			}
         }

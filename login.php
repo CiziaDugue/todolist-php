@@ -24,8 +24,16 @@
 
 			$row = $q->fetch();
 			
+			if (!$row){
+				//Si mauvaise adresse mail
+				$message = '<div class="alert alert-warning" role="alert">Adresse mail inconnue!</div>';
+				//Redirection
+				header("Location: index.php?message=$message");
+				exit();
+			}
+			
 			//Vérification mot de passe
-			if ($_SESSION['password'] == $row['password']){
+			else if ($_SESSION['password'] == $row['password']){
 			
 				$_SESSION['userData'] = array(htmlspecialchars($row['id']), htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
 				
@@ -34,15 +42,16 @@
 			}
 			
 			else {
-				header('Location: index.php');
+				//Si mauvais mot de passe
+				$message = '<div class="alert alert-warning" role="alert">Mauvais mot de passe!</div>';
+				//Redirection
+				header("Location: index.php?message=$message");
 				exit();
 			}
         }
 		
-		/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
+		/*Si erreur ou exception, interception du message*/
 		catch (PDOException $pe) {
 			die("Could not connect to the database $dbname :" . $pe->getMessage());
-			header('Location: index.php');
-			exit();
 		}
 	}
