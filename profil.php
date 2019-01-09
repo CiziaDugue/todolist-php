@@ -37,19 +37,25 @@
 				<?php echo $_SESSION['userData'][2] . ' ' . $_SESSION['userData'][1] . '!' ?>
 			</h2>
 		</header>
+		<?php
+			//Affichage des erreurs de mot de passe
+			if (isset($_SESSION['message'])) {
+				echo $_SESSION['message'];
+			}
+		?>
 		<nav class="my-4">
-				<ul class="nav nav-pills justify-content-center">
-					<li class="nav-item">
-						<a class="nav-link" href="home.php">Mes Listes</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link active" href="profil.php">Profil</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="functions/deconnexion.php" tabindex="-1" aria-disabled="true">Déconnexion</a>
-					</li>
-				</ul>
-			</nav>
+			<ul class="nav nav-pills justify-content-center">
+				<li class="nav-item">
+					<a class="nav-link" href="home.php">Mes Listes</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="profil.php">Profil</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="functions/deconnexion.php" tabindex="-1" aria-disabled="true">Déconnexion</a>
+				</li>
+			</ul>
+		</nav>
 		<section class="container">
 			<div class="row justify-content-center">
 					<div class="col-4">
@@ -60,13 +66,13 @@
 							<p class="mb-3">Nom: <?php echo $_SESSION['userData'][1]; ?></p>
 							<p class="mb-3">Prénom: <?php echo $_SESSION['userData'][2]; ?></p>
 							<p class="mb-3">Mail: <?php echo $_SESSION['userData'][3]; ?></p>
-							<p class="mb-3">Mot de passe: <?php echo $_SESSION['userData'][4]; ?></p>
+							<p class="mb-3">Mot de passe: ******</p>
 						</div>
 					</div>
 
 					<div class="col-4 text-center">
 						<h3 class="mb-2">Modifier mes données personnelles</h3>
-						<form>
+						<form action="functions/majUserData.php" method="post">
 							<div class="form-group">
 								<label for="lastName">Nom</label>
 								<input type="text" class="form-control" placeholder="<?php echo $_SESSION['userData'][1]; ?>" name="lastName">

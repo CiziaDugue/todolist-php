@@ -3,7 +3,7 @@
 
 	require_once '../pdo/pdodbconfig.php';
 
-	echo $_POST['label'].$_POST['description'].$_POST['state_id'].$_SESSION['todolist_id'];
+	//echo $_POST['label'].$_POST['description'].$_POST['state_id'].$_SESSION['todolist_id'];
 
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

@@ -56,7 +56,7 @@
         <section class="container">
         	<div class="row justify-content-between">
 				<div class="col-2">
-				<form action="addaction.php" method="post">
+				<form action="functions/addAction.php" method="post">
 					<input type="text" required placeholder="label" name="label">
 					<textarea required placeholder="Description de l'action" name="description"></textarea>
 					<select class="custom-select" name="state_id">
