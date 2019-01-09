@@ -8,12 +8,25 @@
 
 		//recuperation actions de la todolist
 
-		$sql = 'SELECT t1.id, t1.label from toDoLists t1 INNER JOIN users_toDoLists t2 ON t1.id=t2.toDoList_id WHERE t2.user_id= "' . $_SESSION['userData'][0] . '"';
+		$sql = 'SELECT * from toDoActions WHERE toDoList_id= "' . $_SESSION['todolist_id'] . ';"';
 
 		$q = $conn->query($sql);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 
+		if (isset($_POST['label']) && isset($_POST['description']) && isset($_POST['state_id']) && isset($_POST['user_id'])) {
+		//Préparation de la requête insert
+			$addAction = $conn->prepare('INSERT INTO toDoActions (label, description, state_id, toDoList_id, user_id)'
+			.' VALUES (:label, :description, :state_id, :toDoList_id, :user_id)');
 
+			//Requête SQL
+			$addAction->execute(array(
+				'label' => $_POST['label'],
+				'description' => $_POST['description'],
+				'state_id' => $_POST['state_id'],
+				'toDoList_id' => $_SESSION['todolist_id'],
+				'user_id' => $_POST['user_id']
+			));
+		}
 	}
 
 	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
@@ -23,8 +36,6 @@
 		exit();
 	}
 
-	echo 'L\'id de la tdl sélectionnée est ' .$_GET['id'];
-
 ?>
 
 
@@ -33,10 +44,10 @@
     <head>
 
         <meta http-equiv="Content-type" content="text/html" charset="UTF-8">
-        <link href='css/style.css' rel='stylesheet' type='text/css'>
-        <title>Todolist</title>
+				<title>Todolist</title>
 				<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-        <style>
+				<link href='css/style.css' rel='stylesheet' type='text/css'>
+				<style>
             @import url('https://fonts.googleapis.com/css?family=Ranga');
         </style>
 
@@ -44,23 +55,63 @@
     <body>
 				<header>
 					<h1>TO DO LIST</h1>
-					<h2>Bonjour <?php echo $_SESSION['userData'][2] . ' ' . $_SESSION['userData'][1] . '!' ?></h2>
+					<h2><?php echo $_SESSION['todolist_label']; ?></h2>
 				</header>
         <section class="container">
-					<div id="container">
-						<form data-bind="submit: addTask">
-    					Add task: <input data-bind="value: newTaskText" placeholder="What needs to be done?" />
+					<div class="container">
+						<form data-bind="submit: addTask" action="addaction.php" method="post">
+    					<input placeholder="label" value="label"/>
+							<textarea class="form-control" aria-label="With textarea" value="description">description</textarea>
+							<select class="custom-select" value="state_id">
+								<option selected>1</option>
+								<option>2</option>
+								<option>3</option>
+							</select>
+							<input data-bind="value: newTaskText" placeholder="Utilisateur" value="user_id"/>
     					<button class="btn btn-primary" type="submit">Add</button>
 						</form>
+					</div>
+					<div class="container">
+						<table class="table">
+						  <thead class="thead-dark">
+						    <tr>
+						      <th scope="col">id</th>
+						      <th scope="col">label</th>
+						      <th scope="col">description</th>
+						      <th scope="col">statut</th>
+									<th scope="col">utilisateur</th>
+						    </tr>
+						  </thead>
+						  <tbody>
 
-						<ul data-bind="foreach: tasks, visible: tasks().length > 0">
-						    <li>
-						        <input type="checkbox" data-bind="checked: isDone" />
-						        <input data-bind="value: title, disable: isDone" />
-						        <button class="btn btn-primary" a href="#" data-bind="click: $parent.removeTask">Delete</a></button>
-						    </li>
-						</ul>
+								<!-- Générer tableau avec une ligne pour chaque actions -->
+								<?php	while ($row = $q->fetch()): ?>
+									<tr>
+										<th scope="row"><?php echo htmlspecialchars($row['id']); ?></th>
+							      <td><?php echo htmlspecialchars($row['label']); ?></td>
+							      <td><?php echo htmlspecialchars($row['description']); ?></td>
+										<td>
+											<select class="custom-select">
+											  <option selected><?php echo htmlspecialchars($row['state_id']); ?></option>
+											  <option value="1">A faire</option>
+											  <option value="2">En cours</option>
+											  <option value="3">Terminé</option>
+											</select>
+										</td>
+										<td><?php echo htmlspecialchars($row['user_id']); ?></td>
+									</tr>
+								<?php endwhile; ?>
 
+						  </tbody>
+						</table>
+
+						<?php
+						//Générer tableau avec une ligne pour chaque actions
+							while ($row = $q->fetch()):
+								echo '<a href="todolist.php?id=' . htmlspecialchars($row['id']) . '"><button type="button" class="btn btn-primary btn-lg btn-block mb-4">' . htmlspecialchars($row['label']) . '</button></a>';
+								$_SESSION['todolist_id'] = htmlspecialchars($row['id']);
+								$_SESSION['todolist_label'] = htmlspecialchars($row['label']);
+							endwhile; ?>
 
 
 
