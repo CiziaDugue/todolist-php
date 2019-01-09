@@ -12,21 +12,6 @@
 
 		$q = $conn->query($sql);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
-
-		if (isset($_POST['label']) && isset($_POST['description']) && isset($_POST['state_id']) && isset($_POST['user_id'])) {
-		//Préparation de la requête insert
-			$addAction = $conn->prepare('INSERT INTO toDoActions (label, description, state_id, toDoList_id, user_id)'
-			.' VALUES (:label, :description, :state_id, :toDoList_id, :user_id)');
-
-			//Requête SQL
-			$addAction->execute(array(
-				'label' => $_POST['label'],
-				'description' => $_POST['description'],
-				'state_id' => $_POST['state_id'],
-				'toDoList_id' => $_SESSION['todolist_id'],
-				'user_id' => $_POST['user_id']
-			));
-		}
 	}
 
 	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
@@ -35,9 +20,7 @@
 		header('Location: index.php');
 		exit();
 	}
-
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -59,16 +42,16 @@
 				</header>
         <section class="container">
 					<div class="container">
-						<form data-bind="submit: addTask" action="addaction.php" method="post">
-    					<input placeholder="label" value="label"/>
-							<textarea class="form-control" aria-label="With textarea" value="description">description</textarea>
-							<select class="custom-select" value="state_id">
+						<form action="addaction.php" method="post">
+    						<input type="text" required placeholder="label" name="label">
+							<textarea required placeholder="Description de l'action" name="description"></textarea>
+							<select class="custom-select" name="state_id">
 								<option selected>1</option>
 								<option>2</option>
 								<option>3</option>
 							</select>
-							<input data-bind="value: newTaskText" placeholder="Utilisateur" value="user_id"/>
-    					<button class="btn btn-primary" type="submit">Add</button>
+							<input required type="text" placeholder="Utilisateur" name="user_id">
+    						<input value="Ajouter une action" type="submit">
 						</form>
 					</div>
 					<div class="container">

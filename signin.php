@@ -32,9 +32,6 @@
 					'password' => $_SESSION['userData'][3]
 				));
 
-				//Affichage du résultat
-				echo('<div>Un nouvel utilisateur a été ajouté : '.$_SESSION['userData'][1].'</div>');
-
 				$req = null;
 
 				//Récupération de l'id du user
