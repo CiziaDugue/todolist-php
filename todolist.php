@@ -36,73 +36,87 @@
 
     </head>
     <body>
-				<header>
-					<h1>TO DO LIST</h1>
-					<h2><?php echo $_SESSION['todolist_label']; ?></h2>
-				</header>
+		<header class="mt-3">
+			<h1>TO DO LIST</h1>
+			<h2><?php echo $_SESSION['todolist_label']; ?></h2>
+		</header>
+    	<nav class="my-4">
+			<ul class="nav nav-pills justify-content-center">
+				<li class="nav-item">
+					<a class="nav-link" href="home.php">Mes Listes</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="profil.php">Profil</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="functions/deconnexion.php" tabindex="-1" aria-disabled="true">Déconnexion</a>
+				</li>
+			</ul>
+		</nav>
         <section class="container">
-					<div class="container">
-						<form action="addaction.php" method="post">
-    						<input type="text" required placeholder="label" name="label">
-							<textarea required placeholder="Description de l'action" name="description"></textarea>
-							<select class="custom-select" name="state_id">
-								<option selected>1</option>
-								<option>2</option>
-								<option>3</option>
-							</select>
-							<input required type="text" placeholder="Utilisateur" name="user_id">
-    						<input value="Ajouter une action" type="submit">
-						</form>
-					</div>
-					<div class="container">
-						<table class="table">
-						  <thead class="thead-dark">
-						    <tr>
-						      <th scope="col">id</th>
-						      <th scope="col">label</th>
-						      <th scope="col">description</th>
-						      <th scope="col">statut</th>
-									<th scope="col">utilisateur</th>
-						    </tr>
-						  </thead>
-						  <tbody>
+        	<div class="row justify-content-between">
+				<div class="col-2">
+				<form action="addaction.php" method="post">
+					<input type="text" required placeholder="label" name="label">
+					<textarea required placeholder="Description de l'action" name="description"></textarea>
+					<select class="custom-select" name="state_id">
+						<option selected>1</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+					<input required type="text" placeholder="Utilisateur" name="user_id">
+					<input value="Ajouter une action" type="submit">
+				</form>
+			</div>
+				<div class="col-9">
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">id</th>
+							<th scope="col">label</th>
+							<th scope="col">description</th>
+							<th scope="col">statut</th>
+							<th scope="col">utilisateur</th>
+						</tr>
+					</thead>
+					<tbody>
 
-								<!-- Générer tableau avec une ligne pour chaque actions -->
-								<?php	while ($row = $q->fetch()): ?>
-									<tr>
-										<th scope="row"><?php echo htmlspecialchars($row['id']); ?></th>
-							      <td><?php echo htmlspecialchars($row['label']); ?></td>
-							      <td><?php echo htmlspecialchars($row['description']); ?></td>
-										<td>
-											<select class="custom-select">
-											  <option selected><?php echo htmlspecialchars($row['state_id']); ?></option>
-											  <option value="1">A faire</option>
-											  <option value="2">En cours</option>
-											  <option value="3">Terminé</option>
-											</select>
-										</td>
-										<td><?php echo htmlspecialchars($row['user_id']); ?></td>
-									</tr>
-								<?php endwhile; ?>
+						<!-- Générer tableau avec une ligne pour chaque actions -->
+						<?php	while ($row = $q->fetch()): ?>
+						<tr>
+							<th scope="row">
+								<?php echo htmlspecialchars($row['id']); ?>
+							</th>
+							<td>
+								<?php echo htmlspecialchars($row['label']); ?>
+							</td>
+							<td>
+								<?php echo htmlspecialchars($row['description']); ?>
+							</td>
+							<td>
+								<select class="custom-select">
+									<option selected>
+										<?php echo htmlspecialchars($row['state_id']); ?>
+									</option>
+									<option value="1">A faire</option>
+									<option value="2">En cours</option>
+									<option value="3">Terminé</option>
+								</select>
+							</td>
+							<td>
+								<?php echo htmlspecialchars($row['user_id']); ?>
+							</td>
+						</tr>
+						<?php endwhile; ?>
 
-						  </tbody>
-						</table>
-
-						<?php
-						//Générer tableau avec une ligne pour chaque actions
-							while ($row = $q->fetch()):
-								echo '<a href="todolist.php?id=' . htmlspecialchars($row['id']) . '"><button type="button" class="btn btn-primary btn-lg btn-block mb-4">' . htmlspecialchars($row['label']) . '</button></a>';
-								$_SESSION['todolist_id'] = htmlspecialchars($row['id']);
-								$_SESSION['todolist_label'] = htmlspecialchars($row['label']);
-							endwhile; ?>
-
-
-
+					</tbody>
+				</table>
+        	</div>
         	</div>
         </section>
-				<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-		    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
         <script type="text/javascript" src="js/login.js"></script>
 
     </body>

@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	print_r($_SESSION['userData']);
+	//print_r($_SESSION['userData']);
 
 	require_once 'pdo/pdodbconfig.php';
 
@@ -13,8 +13,6 @@
 
 		$q = $conn->query($sql);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
-
-
 	}
 
 	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
@@ -23,10 +21,7 @@
 		header('Location: index.php');
 		exit();
 	}
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -42,21 +37,25 @@
 
     </head>
     <body>
-		<header class="mb-5">
+		<header class="mt-3">
 			<h1>TO DO LIST</h1>
 			<h2>Bonjour <?php echo $_SESSION['userData'][2] . ' ' . $_SESSION['userData'][1] . '!' ?></h2>
 		</header>
-
+        <nav class="my-4">
+			<ul class="nav nav-pills justify-content-center">
+				<li class="nav-item">
+					<a class="nav-link active" href="home.php">Mes Listes</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="profil.php">Profil</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="functions/deconnexion.php" tabindex="-1" aria-disabled="true">Déconnexion</a>
+				</li>
+			</ul>
+		</nav>
         <section class="container">
-        	<div class="row">
-				<div class="col-4">
-					<nav class="nav flex-column">
-						<a class="nav-link active" href="home.php">Mes Listes</a>
-						<a class="nav-link" href="#">Ajouter une liste</a>
-						<a class="nav-link" href="#">Inviter un utilisateur</a>
-						<a class="nav-link" href="profil.php">Profil</a>
-					</nav>
-				</div>
+        	<div class="row justify-content-center">
 
 				<div class="col-8">
 				<?php
