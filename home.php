@@ -1,6 +1,31 @@
 <?php
 	session_start();
 	print_r($_SESSION['userData']);
+
+	require_once 'pdoCerise/pdodbconfig.php';
+
+	try {
+		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+		echo "Connected to $dbname at $host successfully.";
+
+		//recuperation todolists user
+
+		$sql = 'SELECT t1.id, t1.label from toDoLists t1 INNER JOIN users_toDoLists t2 ON t1.id=t2.toDoList_id WHERE t2.user_id= "' . $_SESSION['userData'][0] . '"';
+
+		$q = $conn->query($sql);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+
+
+	}
+
+	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
+	catch (PDOException $pe) {
+		die("Could not connect to the database $dbname :" . $pe->getMessage());
+		header('Location: index.php');
+		exit();
+	}
+
+
 ?>
 
 
@@ -48,12 +73,18 @@
 						<table class="table table-bordered table-condensed">
 								<thead>
 										<tr>
-
-												<th>Nom</th>
+												<th>num</th>
+												<th>titre</th>
 										</tr>
 								</thead>
 								<tbody>
+									<?php while ($row = $q->fetch()): ?>
+											<tr>
+													<td><?php echo htmlspecialchars($row['id']) ?></td>
+													<td><?php echo htmlspecialchars($row['label']); ?></td>
 
+											</tr>
+									<?php endwhile; ?>
 								</tbody>
 						</table>
         	</div>

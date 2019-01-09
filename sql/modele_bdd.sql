@@ -7,8 +7,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` smallint(5) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `firstName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
-  `mail` varchar(255) UNIQUE NOT NULL,
+  `mail` varchar(255) NOT NULL,
   `password` varchar(12) NOT NULL,
+  UNIQUE (`mail`)
 );
 
 /*Table des to do lists*/
@@ -47,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `users_toDoLists` (
   FOREIGN KEY users_toDoLists_fk1(user_id)
   REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY users_toDoLists_fk2(toDoList_id)
-  REFERENCES toDoLists(id) ON UPDATE CASCADE ON DELETE CASCADE 
+  REFERENCES toDoLists(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 /*Table des commentaires*/
@@ -60,4 +61,3 @@ CREATE TABLE IF NOT EXISTS `comments` (
   FOREIGN KEY comments_fk2(user_id)
   REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
