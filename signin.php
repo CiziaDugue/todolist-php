@@ -1,6 +1,7 @@
 <?php
 	session_start();
 
+
 	//Récupération des données post pour l'inscription
 	if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['password'])) {
 

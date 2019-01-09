@@ -1,5 +1,7 @@
 /*Création d'une base de données*/
-CREATE DATABASE IF NOT EXISTS `todolist` DEFAULT CHARSET=utf8;
+CREATE DATABASE IF NOT EXISTS `todolist`
+CHARACTER SET utf8
+COLLATE utf8_bin;
 USE todolist;
 
 /*Table des utilisateurs*/
@@ -7,10 +9,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` smallint(5) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `firstName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
-  `mail` varchar(255) NOT NULL,
+  `mail` varchar(255) NOT NULL UNIQUE COLLATE utf8_general_ci,
   `password` varchar(12) NOT NULL,
-  UNIQUE (`mail`)
-);
+) ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_bin;
 
 /*Table des to do lists*/
 CREATE TABLE IF NOT EXISTS `toDoLists` (

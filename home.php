@@ -6,6 +6,7 @@
 
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+
 		echo "Connected to $dbname at $host successfully.";
 
 		//recuperation todolists user
@@ -32,7 +33,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
+
+        <meta http-equiv="Content-type" content="text/html" charset="UTF-8">
         <link href='css/style.css' rel='stylesheet' type='text/css'>
         <title>Projet back-end</title>
         <style>

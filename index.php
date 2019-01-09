@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-        <meta charset="utf-8">
+        <meta http-equiv="Content-type" content="text/html" charset="UTF-8">
         <link href='css/style.css' rel='stylesheet' type='text/css'>
         <title>Projet back-end</title>
         <style>
@@ -43,7 +43,7 @@
                             </form>
                         </div>
                         <div id="logIn">
-                        
+
                             <form action="login.php" method="post">
                                 <div class="field_wrap">
                                     <input type="email" name="email" placeholder="Adresse eMail *">
