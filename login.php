@@ -23,8 +23,7 @@
 			$q->setFetchMode(PDO::FETCH_ASSOC);
 
 			$row = $q->fetch();
-<<<<<<< HEAD
-			
+
 			if (!$row){
 				//Si mauvaise adresse mail
 				$message = '<div class="alert alert-warning" role="alert">Adresse mail inconnue!</div>';
@@ -32,16 +31,10 @@
 				header("Location: index.php?message=$message");
 				exit();
 			}
-			
+
 			//Vérification mot de passe
 			else if ($_SESSION['password'] == $row['password']){
-			
-=======
 
-			//Vérification mot de passe
-			if ($_SESSION['password'] == $row['password']){
-
->>>>>>> 2e1387ee0f7acc336f030918490f688235f081f6
 				$_SESSION['userData'] = array(htmlspecialchars($row['id']), htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
 
 				header('Location: home.php');
@@ -56,14 +49,9 @@
 				exit();
 			}
         }
-<<<<<<< HEAD
-		
-		/*Si erreur ou exception, interception du message*/
-=======
 
-		/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
->>>>>>> 2e1387ee0f7acc336f030918490f688235f081f6
-		catch (PDOException $pe) {
+		/*Si erreur ou exception, interception du message*/
+			catch (PDOException $pe) {
 			die("Could not connect to the database $dbname :" . $pe->getMessage());
 		}
 	}
