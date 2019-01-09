@@ -4,16 +4,21 @@
 
 	//Récupération des données post pour l'inscription
 	if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['password'])) {
+		
+		//Cryptage du mot de passe
+		$hashed_pwd = password_hash(htmlspecialchars($_POST['password']), PASSWORD_DEFAULT);
 
-		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
+		//Stockage des données utilisateur dans une variable de session
+		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), $hashed_pwd);
 
 		require_once '../pdo/pdodbconfig.php';
 
+		//Ajout du nouvel utilisateur
         try {
             //Connexion
             $bdd = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-			//Vérif si mail existant & ajout en bdd ou retour au formulaire
+			//Vérif si mail existant
 			$mail_exists = $bdd->prepare('SELECT COUNT(*) FROM users WHERE mail = "' . $_SESSION['userData'][2] . '";');
 
 			$mail_exists->execute();
@@ -24,7 +29,7 @@
 				$req = $bdd->prepare('INSERT INTO users (lastName, firstName, mail, password)'
 				.' VALUES (:lastName, :firstName, :mail, :password)');
 
-				//Requête SQL
+				//Exécution requête SQL
 				$req->execute(array(
 					'lastName' => $_SESSION['userData'][0],
 					'firstName' => $_SESSION['userData'][1],
@@ -34,7 +39,7 @@
 
 				$req = null;
 
-				//Récupération de l'id du user
+				//Récupération de l'id du user et ajout aux userdata
 
 				$sql = 'SELECT id FROM users WHERE mail = "' . $_SESSION['userData'][2] . '";';
 
@@ -46,9 +51,12 @@
 				array_unshift($_SESSION['userData'], htmlspecialchars($row['id']));
 
 				//print_r($_SESSION['userData']);
+				
+				//Réinit
 				$sql = null;
 				$bdd = null;
-
+				
+				//Redirection
 				header('Location: ../home.php');
 				exit();
 			}

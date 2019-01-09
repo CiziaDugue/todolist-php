@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `firstName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
   `mail` varchar(255) NOT NULL UNIQUE COLLATE utf8_general_ci,
-  `password` varchar(12) NOT NULL,
+  `password` varchar(255) NOT NULL,
 ) ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_bin;
 
 /*Table des to do lists*/

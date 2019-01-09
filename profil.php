@@ -46,7 +46,7 @@
 						<a class="nav-link active" href="profil.php">Profil</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="index.php?deco=0" tabindex="-1" aria-disabled="true">Déconnexion</a>
+						<a class="nav-link" href="functions/deconnexion.php" tabindex="-1" aria-disabled="true">Déconnexion</a>
 					</li>
 				</ul>
 			</nav>

@@ -34,7 +34,7 @@
 			}
 
 			//Vérification mot de passe
-			else if ($user_pwd == $row['password']){
+			else if (password_verify($user_pwd, $row['password'])){
 
 				$_SESSION['userData'] = array(htmlspecialchars($row['id']), htmlspecialchars($row['lastName']), htmlspecialchars($row['firstName']), htmlspecialchars($row['mail']), htmlspecialchars($row['password']));
 				
