@@ -57,24 +57,6 @@
 								print_r($row['id']);
 								echo '<a href="todolist.php?id=' . htmlspecialchars($row['id']) . '"><button type="button" class="btn btn-primary btn-lg btn-block">' . htmlspecialchars($row['label']) . '</button></a>';
 							endwhile; ?>
-						<h5>listes personnelles</h5>
-						<table class="table table-bordered table-condensed">
-								<thead>
-										<tr>
-												<th>num</th>
-												<th>titre</th>
-										</tr>
-								</thead>
-								<tbody>
-									<?php while ($row = $q->fetch()): ?>
-											<tr>
-													<td><?php echo htmlspecialchars($row['id']) ?></td>
-													<td><?php echo htmlspecialchars($row['label']); ?></td>
-
-											</tr>
-									<?php endwhile; ?>
-								</tbody>
-						</table>
         	</div>
         </section>
 				<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
