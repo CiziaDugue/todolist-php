@@ -9,7 +9,7 @@
 
 		//Vérification du mot de passe
 
-		require_once 'pdoCerise/pdodbconfig.php';
+		require_once 'pdo/pdodbconfig.php';
 
 		try {
 			$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

@@ -7,7 +7,7 @@
 
 		$_SESSION['userData'] = array(htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
 
-		require_once 'pdoCerise/pdodbconfig.php';
+		require_once 'pdo/pdodbconfig.php';
 
         try {
             //Connexion
