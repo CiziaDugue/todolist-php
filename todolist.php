@@ -80,7 +80,7 @@
 							<option value="4">Archivé</option>
 							<option value="5">Annulé</option>
 						</select>
-						<select required class="custom-select" name="userName">
+						<select required class="custom-select" name="user_id">
 							<?php
 								$qGetActions = $conn->query($getActions);
 								$qGetActions->setFetchMode(PDO::FETCH_ASSOC);

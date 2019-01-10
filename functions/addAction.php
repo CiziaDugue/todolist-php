@@ -19,7 +19,11 @@
 				'toDoList_id' => $_SESSION['todolistId'],
 				'user_id' => $_POST['user_id']
 			));
+			
+			//Message de confirmation
+			$_SESSION['message'] = '<div class="alert alert-dark mx-5" role="alert">Action supprimée avec succès!</div>';
 
+			//Redirection
 			header('Location: ../todolist.php');
 			exit();
 		}

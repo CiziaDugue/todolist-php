@@ -30,7 +30,7 @@ CREATE TABLE `comments` (
   `task_id` smallint(5) UNSIGNED NOT NULL,
   `user_id` smallint(5) UNSIGNED NOT NULL,
   `text` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
 
 --
 -- Contenu de la table `comments`
@@ -250,28 +250,23 @@ ALTER TABLE `users`
 -- Contraintes pour la table `comments`
 --
 ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `toDoActions` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `toDoActions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `toDoActions`
 --
 ALTER TABLE `toDoActions`
-<<<<<<< HEAD
-  ADD CONSTRAINT `toDoActions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
-  ADD CONSTRAINT `toDoActions_ibfk_2` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
-=======
   ADD CONSTRAINT `toDoActions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `toDoActions_ibfk_2` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`),
->>>>>>> 254b7719e10061921e09e29cf223a88a664da2da
-  ADD CONSTRAINT `toDoActions_ibfk_3` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+  ADD CONSTRAINT `toDoActions_ibfk_3` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `users_toDoLists`
 --
 ALTER TABLE `users_toDoLists`
-  ADD CONSTRAINT `users_toDoLists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
-  ADD CONSTRAINT `users_toDoLists_ibfk_2` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+  ADD CONSTRAINT `users_toDoLists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_toDoLists_ibfk_2` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

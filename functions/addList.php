@@ -37,7 +37,7 @@
 			));
 
 			//alert success
-			$_SESSION['message'] = '<div class="alert alert-success mx-5" role="alert">liste créée</div>';
+			$_SESSION['message'] = '<div class="alert alert-success mx-5" role="alert">Liste créée avec succès!</div>';
 
 			//réinit
 			$addList = null;

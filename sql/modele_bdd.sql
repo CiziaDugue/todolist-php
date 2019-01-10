@@ -1,4 +1,9 @@
+/*Création d'une base de données*/
+CREATE DATABASE IF NOT EXISTS `todolist`
+CHARACTER SET utf8
+COLLATE utf8_bin;
 
+/*Utilisation de cette bdd*/
 USE todolist;
 
 /*Table des utilisateurs*/

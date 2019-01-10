@@ -10,7 +10,6 @@
 
 		//recuperation todolists user
 		$sql = 'SELECT t1.id, t1.label from toDoLists t1 INNER JOIN users_toDoLists t2 ON t1.id=t2.toDoList_id WHERE t2.user_id= "' . $_SESSION['userData'][0] . '"';
-
 		$q = $conn->query($sql);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 	}
