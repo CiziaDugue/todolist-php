@@ -41,6 +41,13 @@
 			<h1>TO DO LIST</h1>
 			<h2>Bonjour <?php echo $_SESSION['userData'][2] . ' ' . $_SESSION['userData'][1] . '!' ?></h2>
 		</header>
+		<?php
+			//erreur ou confirmation creation liste
+			if (isset($_SESSION['message'])) {
+				echo $_SESSION['message'];
+				$_SESSION['message']=NULL;
+			}
+		?>
         <nav class="my-4">
 			<ul class="nav nav-pills justify-content-center">
 				<li class="nav-item">
@@ -56,15 +63,20 @@
 		</nav>
         <section class="container">
         	<div class="row justify-content-center">
-
-				<div class="col-8">
-				<?php
-				//Générer bouton pour chaque todolist & lien créé dynamiquement
-					while ($row = $q->fetch()):
-						echo '<a href="todolist.php?id=' . htmlspecialchars($row['id']) . '"><button type="button" class="btn btn-primary btn-lg btn-block mb-4">' . htmlspecialchars($row['label']) . '</button></a>';
-						$_SESSION['todolist_id'] = htmlspecialchars($row['id']);
-						$_SESSION['todolist_label'] = htmlspecialchars($row['label']);
-					endwhile; ?>
+						<div class="col-4">
+							<form action="functions/addList.php" method="post">
+								<input type="text" required placeholder="label" name="label">
+								<input value="Ajouter liste" type="submit">
+							</form>
+						</div>
+						<div class="col-4">
+						<?php
+						//Générer bouton pour chaque todolist & lien créé dynamiquement
+							while ($row = $q->fetch()):
+								echo '<a href="todolist.php?id=' . htmlspecialchars($row['id']) . '"><button type="button" class="btn btn-primary btn-lg btn-block mb-4">' . htmlspecialchars($row['label']) . '</button></a>';
+								$_SESSION['todolist_id'] = htmlspecialchars($row['id']);
+								$_SESSION['todolist_label'] = htmlspecialchars($row['label']);
+							endwhile; ?>
         		</div>
         	</div>
         </section>

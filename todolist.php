@@ -63,18 +63,18 @@
         <section class="container">
         	<div class="row justify-content-between">
 				<div class="col-2">
-				<form action="functions/addAction.php" method="post">
-					<input type="text" required placeholder="label" name="label">
-					<textarea required placeholder="Description de l'action" name="description"></textarea>
-					<select class="custom-select" name="state_id">
-						<option selected>1</option>
-						<option>2</option>
-						<option>3</option>
-					</select>
-					<input required type="text" placeholder="Utilisateur" name="user_id">
-					<input value="Ajouter une action" type="submit">
-				</form>
-			</div>
+					<form action="functions/addAction.php" method="post">
+						<input type="text" required placeholder="label" name="label">
+						<textarea required placeholder="Description de l'action" name="description"></textarea>
+						<select class="custom-select" name="state_id">
+							<option selected>1</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+						<input required type="text" placeholder="Utilisateur" name="user_id">
+						<input value="Ajouter une action" type="submit">
+					</form>
+				</div>
 				<div class="col-9">
 				<table class="table">
 					<thead class="thead-dark">
