@@ -3,15 +3,23 @@
 
 	require_once 'pdo/pdodbconfig.php';
 
+	if (isset($_GET['id'])){
+		$_SESSION['todolist_id'] = htmlspecialchars($_GET['id']);
+	}
+
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-		//recuperation actions de la todolist
-
-		$sql = 'SELECT * from toDoActions WHERE toDoList_id= "' . $_SESSION['todolist_id'] . ';"';
-
-		$q = $conn->query($sql);
-		$q->setFetchMode(PDO::FETCH_ASSOC);
+		//Récupération actions de la todolist
+		$getActions = 'SELECT * from toDoActions WHERE toDoList_id= "' . $_SESSION['todolist_id'] . ';"';
+		$qGetActions = $conn->query($getActions);
+		$qGetActions->setFetchMode(PDO::FETCH_ASSOC);
+		
+		//Récupération des noms des users
+		$getUserNames = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.user_id=:user_id'; 
+		//$qGetUserNames = $conn->query($getUserNames);
+		//$qGetUserNames->setFetchMode(PDO::FETCH_ASSOC);
+		
 	}
 
 	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
@@ -66,20 +74,27 @@
 					<form action="functions/addAction.php" method="post">
 						<input type="text" required placeholder="label" name="label">
 						<textarea required placeholder="Description de l'action" name="description"></textarea>
-						<select class="custom-select" name="state_id">
+						<select required class="custom-select" name="state_id">
 							<option selected>1</option>
 							<option>2</option>
 							<option>3</option>
 						</select>
 						<input required type="text" placeholder="Utilisateur" name="user_id">
-						<input value="Ajouter une action" type="submit">
+						<input value="Ajouter une tâche" type="submit" name="addSubmit">
+					</form>
+					<form action="functions/delAction.php" method="post">
+						<select required class="custom-select" name="label">
+							<?php	while ($row = $qGetActions->fetch()): ?>
+								<option><?php echo htmlspecialchars($row['label']); ?></option>
+							<?php endwhile; ?>
+						</select>
+						<input value="Ajouter une tâche" type="submit" name="addSubmit">
 					</form>
 				</div>
 				<div class="col-9">
 				<table class="table">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">id</th>
 							<th scope="col">label</th>
 							<th scope="col">description</th>
 							<th scope="col">statut</th>
@@ -89,14 +104,13 @@
 					<tbody>
 
 						<!-- Générer tableau avec une ligne pour chaque actions -->
-						<?php	while ($row = $q->fetch()): ?>
+						<?php	$qGetActions = $conn->query($getActions);
+								$qGetActions->setFetchMode(PDO::FETCH_ASSOC);
+						while ($row = $qGetActions->fetch()): ?>
 						<tr>
 							<th scope="row">
-								<?php echo htmlspecialchars($row['id']); ?>
-							</th>
-							<td>
 								<?php echo htmlspecialchars($row['label']); ?>
-							</td>
+							</th>
 							<td>
 								<?php echo htmlspecialchars($row['description']); ?>
 							</td>

@@ -8,8 +8,8 @@
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-		if (isset($_POST['label']) && isset($_POST['description']) && isset($_POST['state_id']) && isset($_POST['user_id'])) {
-		//Préparation de la requête insert
+		if (isset($_POST['label']) && isset($_POST['description']) && isset($_POST['state_id']) && isset($_POST['user_id']) && isset($_POST['addSubmit'])) {
+			//Préparation de la requête insert
 			$addAction = $conn->prepare('INSERT INTO toDoActions (label, description, state_id, toDoList_id, user_id)'
 			.' VALUES (:label, :description, :state_id, :toDoList_id, :user_id)');
 
