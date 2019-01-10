@@ -257,8 +257,13 @@ ALTER TABLE `comments`
 -- Contraintes pour la table `toDoActions`
 --
 ALTER TABLE `toDoActions`
+<<<<<<< HEAD
   ADD CONSTRAINT `toDoActions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
   ADD CONSTRAINT `toDoActions_ibfk_2` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+=======
+  ADD CONSTRAINT `toDoActions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `toDoActions_ibfk_2` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`),
+>>>>>>> 254b7719e10061921e09e29cf223a88a664da2da
   ADD CONSTRAINT `toDoActions_ibfk_3` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 --
