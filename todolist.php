@@ -16,10 +16,14 @@
 		$qGetActions = $conn->query($getActions);
 		$qGetActions->setFetchMode(PDO::FETCH_ASSOC);
 		
-		//Récupération des noms des users
-		$getUserNames = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.user_id=:user_id';
-		//$qGetUserNames = $conn->query($getUserNames);
-		//$qGetUserNames->setFetchMode(PDO::FETCH_ASSOC);
+		//Récupération des noms des users associés à la tâche
+		function getUserTask($taskId, $conn) {
+			$getUserNames = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.id='.$taskId;
+			$qGetUserNames = $conn->query($getUserNames);
+			$qGetUserNames->setFetchMode(PDO::FETCH_ASSOC);
+			$rowUserName = $qGetUserNames->fetch();
+			return $rowUserName['firstName'].' '.$rowUserName['lastName'];
+		}
 		
 	}
 
@@ -90,6 +94,14 @@
 								<option><?php echo htmlspecialchars($row['label']); ?></option>
 							<?php endwhile; ?>
 						</select>
+						<select required class="custom-select" name="userName">
+							<?php
+								$qGetActions = $conn->query($getActions);
+								$qGetActions->setFetchMode(PDO::FETCH_ASSOC);
+								while ($row = $qGetActions->fetch()): ?>
+									<option><?php echo getUserTask($row['id'], $conn); ?></option>
+							<?php endwhile; ?>
+						</select>
 						<input value="Ajouter une tâche" type="submit" name="addSubmit">
 					</form>
 				</div>
@@ -128,7 +140,7 @@
 								</select>
 							</td>
 							<td>
-								<?php echo htmlspecialchars($row['user_id']); ?>
+								<?php echo getUserTask($row['id'], $conn); ?>
 							</td>
 							<td>
 								<a href="functions/delAction.php?id=<?php echo htmlspecialchars($row['id']); ?>"><button type="button" class="btn btn-primary"><i class="fa fa-trash"></i></button></a>

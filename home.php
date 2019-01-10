@@ -8,11 +8,22 @@
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
 		//recuperation todolists user
-
 		$sql = 'SELECT t1.id, t1.label from toDoLists t1 INNER JOIN users_toDoLists t2 ON t1.id=t2.toDoList_id WHERE t2.user_id= "' . $_SESSION['userData'][0] . '"';
 
 		$q = $conn->query($sql);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
+		
+		//Récupération des noms des users associés à la liste
+		function getUserList($listId, $conn) {
+			$getUserList = 'SELECT t1.firstName, t1.lastName FROM users t1 INNER JOIN users_toDoLists t2 ON t1.id = t2.user_id WHERE t2.toDoList_id='.$listId;
+			$qGetUserList = $conn->query($getUserList);
+			$qGetUserList->setFetchMode(PDO::FETCH_ASSOC);
+			$userList = 'Utilisateurs associés: ';
+			while ($rowUserList = $qGetUserList->fetch()):
+				$userList .= $rowUserList['firstName'].' '.$rowUserList['lastName'].' ';
+			endwhile;
+			return $userList;
+		}
 	}
 
 	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
@@ -75,15 +86,22 @@
 						//Générer bouton pour chaque todolist & lien créé dynamiquement
 							while ($row = $q->fetch()):
 								$tdlId = htmlspecialchars($row['id']);
-								$tdlLabel = htmlspecialchars($row['label']);
-								echo '<div class="btn-group mb-4"><a href="todolist.php?id='
-								. $tdlId . '&label=' . $tdlLabel
-								. '"><button type="button" class="btn btn-list btn-primary ">'
-								. $tdlLabel
-								. '</button></a>' . '<a href="functions/delList.php?id='
-								. $tdlId
-								. '"><button class="btn"><i class="fa fa-trash"></i></button></a></div></br>';
-							endwhile; ?>
+								$tdlLabel = htmlspecialchars($row['label']); ?>
+								<div class="btn-group mb-4">
+									<a href="todolist.php?id=<?php echo $tdlId; ?>&label=<?php echo $tdlLabel; ?>">
+										<button type="button" class="btn btn-list btn-primary ">
+											<?php echo $tdlLabel; ?>
+											<br>
+											<?php echo getUserList($tdlId, $conn); ?>
+										</button>
+									</a>
+									<a href="functions/delList.php?id=<?php echo $tdlId; ?>">
+										<button class="btn">
+											<i class="fa fa-trash"></i>
+										</button>
+									</a>
+								</div>
+						<?php endwhile; ?>
         		</div>
         	</div>
         </section>
