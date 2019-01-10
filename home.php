@@ -3,6 +3,7 @@
 	//print_r($_SESSION['userData']);
 
 	require_once 'pdo/pdodbconfig.php';
+	require_once 'functions/getUserList.php';
 
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -12,18 +13,6 @@
 
 		$q = $conn->query($sql);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
-		
-		//Récupération des noms des users associés à la liste
-		function getUserList($listId, $conn) {
-			$getUserList = 'SELECT t1.firstName, t1.lastName FROM users t1 INNER JOIN users_toDoLists t2 ON t1.id = t2.user_id WHERE t2.toDoList_id='.$listId;
-			$qGetUserList = $conn->query($getUserList);
-			$qGetUserList->setFetchMode(PDO::FETCH_ASSOC);
-			$userList = 'Utilisateurs associés: ';
-			while ($rowUserList = $qGetUserList->fetch()):
-				$userList .= $rowUserList['firstName'].' '.$rowUserList['lastName'].' ';
-			endwhile;
-			return $userList;
-		}
 	}
 
 	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/

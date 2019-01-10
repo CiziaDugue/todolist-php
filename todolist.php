@@ -2,6 +2,9 @@
 	session_start();
 
 	require_once 'pdo/pdodbconfig.php';
+	require_once 'functions/getUserForTask.php';
+	require_once 'functions/getUserTask.php';
+	require_once 'functions/getTaskLabel.php';
 
 	if (isset($_GET['id']) && isset($_GET['label'])){
 		$_SESSION['todolistId'] = htmlspecialchars($_GET['id']);
@@ -14,29 +17,7 @@
 		//Récupération actions de la todolist
 		$getActions = 'SELECT * from toDoActions WHERE toDoList_id= "' . $_SESSION['todolistId'] . ';"';
 		$qGetActions = $conn->query($getActions);
-		$qGetActions->setFetchMode(PDO::FETCH_ASSOC);
-		
-		//Récupération des noms des users associés à la tâche
-		function getUserTask($taskId, $conn) {
-			$getUserTask = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.id='.$taskId;
-			$qGetUserTask = $conn->query($getUserTask);
-			$qGetUserTask->setFetchMode(PDO::FETCH_ASSOC);
-			$userTask = '';
-			while ($rowUserTask = $qGetUserTask->fetch()):
-				$userTask .= $rowUserTask['firstName'].' '.$rowUserTask['lastName'].'<br>';
-			endwhile;
-			return $userTask;
-		}
-		
-		//Récupération des libellés des états associés aux tâches
-		function getTaskLabel($stateId, $conn) {
-			$getTaskLabel = 'SELECT label FROM state WHERE id='.$stateId;
-			$qGetTaskLabel = $conn->query($getTaskLabel);
-			$qGetTaskLabel->setFetchMode(PDO::FETCH_ASSOC);
-			$rowTaskLabel = $qGetTaskLabel->fetch();
-			return $rowTaskLabel['label'];
-		}
-		
+		$qGetActions->setFetchMode(PDO::FETCH_ASSOC);		
 	}
 
 	/*Si erreur ou exception, interception du message ou mauvaise adresse mail*/
@@ -93,25 +74,18 @@
 						<input type="text" required placeholder="label" name="label">
 						<textarea required placeholder="Description de l'action" name="description"></textarea>
 						<select required class="custom-select" name="state_id">
-							<option selected>1</option>
-							<option>2</option>
-							<option>3</option>
-						</select>
-						<input required type="text" placeholder="Utilisateur" name="user_id">
-						<input value="Ajouter une tâche" type="submit" name="addSubmit">
-					</form>
-					<form action="functions/delAction.php" method="post">
-						<select required class="custom-select" name="label">
-							<?php	while ($row = $qGetActions->fetch()): ?>
-								<option><?php echo htmlspecialchars($row['label']); ?></option>
-							<?php endwhile; ?>
+							<option selected value="1">A faire</option>
+							<option value="2">En cours</option>
+							<option value="3">Achevé</option>
+							<option value="4">Archivé</option>
+							<option value="5">Annulé</option>
 						</select>
 						<select required class="custom-select" name="userName">
 							<?php
 								$qGetActions = $conn->query($getActions);
 								$qGetActions->setFetchMode(PDO::FETCH_ASSOC);
 								while ($row = $qGetActions->fetch()): ?>
-									<option><?php echo getUserTask($row['id'], $conn); ?></option>
+									<option value="<?php echo $row['user_id']; ?>"><?php echo getUserForTask($_SESSION['todolistId'], $conn); ?></option>
 							<?php endwhile; ?>
 						</select>
 						<input value="Ajouter une tâche" type="submit" name="addSubmit">
@@ -143,12 +117,14 @@
 							</td>
 							<td>
 								<select class="custom-select">
-									<option selected>
+									<option selected value="<?php echo $row['state_id']; ?>">
 										<?php echo getTaskLabel($row['state_id'], $conn); ?>
 									</option>
 									<option value="1">A faire</option>
 									<option value="2">En cours</option>
-									<option value="3">Terminé</option>
+									<option value="3">Achevé</option>
+									<option value="4">Archivé</option>
+									<option value="5">Annulé</option>
 								</select>
 							</td>
 							<td>

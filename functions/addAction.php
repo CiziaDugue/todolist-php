@@ -3,8 +3,6 @@
 
 	require_once '../pdo/pdodbconfig.php';
 
-	//echo $_POST['label'].$_POST['description'].$_POST['state_id'].$_SESSION['todolist_id'];
-
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
@@ -18,17 +16,18 @@
 				'label' => $_POST['label'],
 				'description' => $_POST['description'],
 				'state_id' => $_POST['state_id'],
-				'toDoList_id' => $_SESSION['todolist_id'],
+				'toDoList_id' => $_SESSION['todolistId'],
 				'user_id' => $_POST['user_id']
 			));
-
-			echo 'Un nouvel utilisateur a été ajouté : '.$_POST['label'];
 
 			header('Location: ../todolist.php');
 			exit();
 		}
 		else {
-			echo 'Fais CHIER!!';
+			$_SESSION['message'] = '<div class="alert alert-warning mx-5" role="alert">Remplissez le formulaire!</div>';
+			//Redirection
+			header('Location: ../todolist.php');
+			exit();
 		}
 	}
 
