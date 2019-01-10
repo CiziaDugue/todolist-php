@@ -250,23 +250,23 @@ ALTER TABLE `users`
 -- Contraintes pour la table `comments`
 --
 ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `toDoActions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `toDoActions` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 --
 -- Contraintes pour la table `toDoActions`
 --
 ALTER TABLE `toDoActions`
-  ADD CONSTRAINT `toDoActions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `toDoActions_ibfk_2` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`),
-  ADD CONSTRAINT `toDoActions_ibfk_3` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `toDoActions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+  ADD CONSTRAINT `toDoActions_ibfk_2` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+  ADD CONSTRAINT `toDoActions_ibfk_3` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 --
 -- Contraintes pour la table `users_toDoLists`
 --
 ALTER TABLE `users_toDoLists`
-  ADD CONSTRAINT `users_toDoLists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `users_toDoLists_ibfk_2` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `users_toDoLists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+  ADD CONSTRAINT `users_toDoLists_ibfk_2` FOREIGN KEY (`toDoList_id`) REFERENCES `toDoLists` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
