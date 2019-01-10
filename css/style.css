@@ -1,3 +1,12 @@
+* {
+  box-sizing: border-box;
+  font-family: arial;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+}
 
 buttons, input[type=submit], #geoLocButton {
   border-radius: 5px;
@@ -13,16 +22,6 @@ buttons:hover,
 input[type=submit]:hover,
 #geoLocButton:hover {
   background-color: #00dda5;
-}
-
-* {
-  box-sizing: border-box;
-  font-family: arial;
-  font-size: 16px;
-}
-
-body {
-  margin: 0;
 }
 
 h1{
@@ -214,4 +213,9 @@ h3{
 }
 .loginContentPage #logIn {
   display: none;
+}
+
+/*button List*/
+.btn-list {
+  width: 450px;
 }
