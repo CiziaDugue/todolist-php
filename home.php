@@ -29,8 +29,9 @@
 
         <meta http-equiv="Content-type" content="text/html" charset="UTF-8">
         <title>Home</title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-		<link href='css/style.css' rel='stylesheet' type='text/css'>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+				<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+				<link href='css/style.css' rel='stylesheet' type='text/css'>
         <style>
             @import url('https://fonts.googleapis.com/css?family=Ranga');
         </style>
@@ -69,13 +70,19 @@
 								<input value="Ajouter liste" type="submit">
 							</form>
 						</div>
-						<div class="col-4">
+						<div class="col-8">
 						<?php
 						//Générer bouton pour chaque todolist & lien créé dynamiquement
 							while ($row = $q->fetch()):
-								echo '<a href="todolist.php?id=' . htmlspecialchars($row['id']) . '"><button type="button" class="btn btn-primary btn-lg btn-block mb-4">' . htmlspecialchars($row['label']) . '</button></a>';
-								$_SESSION['todolist_id'] = htmlspecialchars($row['id']);
-								$_SESSION['todolist_label'] = htmlspecialchars($row['label']);
+								echo '<div class="btn-group mb-4"><a href="todolist.php?id='
+								. htmlspecialchars($row['id'])
+								. '"><button type="button" class="btn btn-list btn-primary ">'
+								. htmlspecialchars($row['label'])
+								. '</button></a>' . '<a href="functions/delList.php?id='
+								. htmlspecialchars($row['id'])
+								. '"><button class="btn"><i class="fa fa-trash"></i></button></a></div></br>';
+								//$_SESSION['todolist_id'] = htmlspecialchars($row['id']);
+								//$_SESSION['todolist_label'] = htmlspecialchars($row['label']);
 							endwhile; ?>
         		</div>
         	</div>
