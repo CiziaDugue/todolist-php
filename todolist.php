@@ -18,11 +18,23 @@
 		
 		//Récupération des noms des users associés à la tâche
 		function getUserTask($taskId, $conn) {
-			$getUserNames = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.id='.$taskId;
-			$qGetUserNames = $conn->query($getUserNames);
-			$qGetUserNames->setFetchMode(PDO::FETCH_ASSOC);
-			$rowUserName = $qGetUserNames->fetch();
-			return $rowUserName['firstName'].' '.$rowUserName['lastName'];
+			$getUserTask = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.id='.$taskId;
+			$qGetUserTask = $conn->query($getUserTask);
+			$qGetUserTask->setFetchMode(PDO::FETCH_ASSOC);
+			$userTask = '';
+			while ($rowUserTask = $qGetUserTask->fetch()):
+				$userTask .= $rowUserTask['firstName'].' '.$rowUserTask['lastName'].'<br>';
+			endwhile;
+			return $userTask;
+		}
+		
+		//Récupération des libellés des états associés aux tâches
+		function getTaskLabel($stateId, $conn) {
+			$getTaskLabel = 'SELECT label FROM state WHERE id='.$stateId;
+			$qGetTaskLabel = $conn->query($getTaskLabel);
+			$qGetTaskLabel->setFetchMode(PDO::FETCH_ASSOC);
+			$rowTaskLabel = $qGetTaskLabel->fetch();
+			return $rowTaskLabel['label'];
 		}
 		
 	}
@@ -132,7 +144,7 @@
 							<td>
 								<select class="custom-select">
 									<option selected>
-										<?php echo htmlspecialchars($row['state_id']); ?>
+										<?php echo getTaskLabel($row['state_id'], $conn); ?>
 									</option>
 									<option value="1">A faire</option>
 									<option value="2">En cours</option>
