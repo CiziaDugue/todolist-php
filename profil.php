@@ -41,6 +41,7 @@
 			//Affichage des erreurs de mot de passe
 			if (isset($_SESSION['message'])) {
 				echo $_SESSION['message'];
+				$_SESSION['message'] = null;
 			}
 		?>
 		<nav class="my-4">
@@ -94,10 +95,28 @@
 								<input type="password" class="form-control" placeholder="******" name="newPwd">
 							</div>
 							<div class="form-group form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
+								<input type="checkbox" class="form-check-input" name="check1">
 								<label class="form-check-label" for="exampleCheck1">Valider les changements</label>
 							</div>
 							<button type="submit" class="btn btn-primary">Envoyer</button>
+						</form>
+					</div>
+					<div class="col-4 text-center">
+						<h3 class="mb-2">Supprimer mon compte</h3>
+						<form action="functions/delUserProfile.php" method="post">
+							<div class="form-group">
+								<label for="pwd">Entrez mot de passe</label>
+								<input type="password" class="form-control" placeholder="******" name="pwd1">
+							</div>
+							<div class="form-group">
+								<label for="pwd">Confirmez mot de passe</label>
+								<input type="password" class="form-control" placeholder="******" name="pwd2">
+							</div>
+							<div class="form-group form-check">
+								<input type="checkbox" class="form-check-input" name="check2">
+								<label class="form-check-label" for="exampleCheck1">Valider les changements</label>
+							</div>
+							<button type="submit" class="btn btn-primary">Supprimer</button>
 						</form>
 					</div>
 				</div>

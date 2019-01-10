@@ -6,7 +6,7 @@
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
-		if (isset($_POST['lastName']) && isset($_POST['firstName']) && isset($_POST['mail']) && isset($_POST['oldPwd']) && isset($_POST['newPwd'])) {
+		if (isset($_POST['lastName']) && isset($_POST['firstName']) && isset($_POST['mail']) && isset($_POST['oldPwd']) && isset($_POST['newPwd']) && isset($_POST['check1'])) {
 			
 			//Vérif pwd
 			if (password_verify(htmlspecialchars($_POST['oldPwd']), $_SESSION['userData'][4])){
@@ -32,6 +32,10 @@
 				//Réinit
 				$majUserData = null;
 				$conn = null;
+				
+				//Message de confirmation
+				$_SESSION['message'] = '<div class="alert alert-success mx-5" role="alert">Changements enregistrés!</div>';
+				
 				//Redirection
 				header('Location: ../profil.php');
 				exit();
@@ -45,7 +49,10 @@
 			}
 		}
 		else {
-			echo 'Fais CHIER!!';
+			$_SESSION['message'] = '<div class="alert alert-warning mx-5" role="alert">Remplissez le formulaire!</div>';
+			//Redirection
+			header("Location: ../profil.php");
+			exit();
 		}
 	}
 

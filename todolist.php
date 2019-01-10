@@ -40,6 +40,13 @@
 			<h1>TO DO LIST</h1>
 			<h2><?php echo $_SESSION['todolist_label']; ?></h2>
 		</header>
+   		<?php
+			//Affichage des erreurs de mot de passe
+			if (isset($_SESSION['message'])) {
+				echo $_SESSION['message'];
+				$_SESSION['message'] = null;
+			}
+		?>
     	<nav class="my-4">
 			<ul class="nav nav-pills justify-content-center">
 				<li class="nav-item">

@@ -1,5 +1,5 @@
 <?php
-$pwd = 'thd41sn';
+$pwd = '123456';
 echo $pwd;
 echo '<br>';
 $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
