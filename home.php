@@ -74,15 +74,15 @@
 						<?php
 						//Générer bouton pour chaque todolist & lien créé dynamiquement
 							while ($row = $q->fetch()):
+								$tdlId = htmlspecialchars($row['id']);
+								$tdlLabel = htmlspecialchars($row['label']);
 								echo '<div class="btn-group mb-4"><a href="todolist.php?id='
-								. htmlspecialchars($row['id'])
+								. $tdlId . '&label=' . $tdlLabel
 								. '"><button type="button" class="btn btn-list btn-primary ">'
-								. htmlspecialchars($row['label'])
+								. $tdlLabel
 								. '</button></a>' . '<a href="functions/delList.php?id='
-								. htmlspecialchars($row['id'])
+								. $tdlId
 								. '"><button class="btn"><i class="fa fa-trash"></i></button></a></div></br>';
-								//$_SESSION['todolist_id'] = htmlspecialchars($row['id']);
-								//$_SESSION['todolist_label'] = htmlspecialchars($row['label']);
 							endwhile; ?>
         		</div>
         	</div>

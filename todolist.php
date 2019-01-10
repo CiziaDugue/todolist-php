@@ -3,20 +3,21 @@
 
 	require_once 'pdo/pdodbconfig.php';
 
-	if (isset($_GET['id'])){
-		$_SESSION['todolist_id'] = htmlspecialchars($_GET['id']);
+	if (isset($_GET['id']) && isset($_GET['label'])){
+		$_SESSION['todolistId'] = htmlspecialchars($_GET['id']);
+		$_SESSION['todolistLabel'] = htmlspecialchars($_GET['label']);
 	}
 
 	try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
 		//Récupération actions de la todolist
-		$getActions = 'SELECT * from toDoActions WHERE toDoList_id= "' . $_SESSION['todolist_id'] . ';"';
+		$getActions = 'SELECT * from toDoActions WHERE toDoList_id= "' . $_SESSION['todolistId'] . ';"';
 		$qGetActions = $conn->query($getActions);
 		$qGetActions->setFetchMode(PDO::FETCH_ASSOC);
 		
 		//Récupération des noms des users
-		$getUserNames = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.user_id=:user_id'; 
+		$getUserNames = 'SELECT t1.id, t1.firstName, t1.lastName FROM users t1 INNER JOIN toDoActions t2 ON t1.id = t2.user_id WHERE t2.user_id=:user_id';
 		//$qGetUserNames = $conn->query($getUserNames);
 		//$qGetUserNames->setFetchMode(PDO::FETCH_ASSOC);
 		
@@ -36,6 +37,7 @@
 
         <meta http-equiv="Content-type" content="text/html" charset="UTF-8">
 				<title>Todolist</title>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 				<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 				<link href='css/style.css' rel='stylesheet' type='text/css'>
 				<style>
@@ -46,7 +48,7 @@
     <body>
 		<header class="mt-3">
 			<h1>TO DO LIST</h1>
-			<h2><?php echo $_SESSION['todolist_label']; ?></h2>
+			<h2><?php echo $_SESSION['todolistLabel']; ?></h2>
 		</header>
    		<?php
 			//Affichage des erreurs de mot de passe
@@ -99,6 +101,7 @@
 							<th scope="col">description</th>
 							<th scope="col">statut</th>
 							<th scope="col">utilisateur</th>
+							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -126,6 +129,9 @@
 							</td>
 							<td>
 								<?php echo htmlspecialchars($row['user_id']); ?>
+							</td>
+							<td>
+								<a href="functions/delAction.php?id=<?php echo htmlspecialchars($row['id']); ?>"><button type="button" class="btn btn-primary"><i class="fa fa-trash"></i></button></a>
 							</td>
 						</tr>
 						<?php endwhile; ?>

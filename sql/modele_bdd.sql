@@ -34,11 +34,11 @@ CREATE TABLE IF NOT EXISTS `toDoActions` (
   `toDoList_id` smallint(5) unsigned NOT NULL,
   `user_id` smallint(5) unsigned NOT NULL,
   FOREIGN KEY toDoActions_fk1(user_id)
-  REFERENCES users(id),
+  REFERENCES users(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY toDoActions_fk2(state_id)
-  REFERENCES state(id),
+  REFERENCES state(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY toDoActions_fk3(toDoList_id)
-  REFERENCES toDoLists(id) ON UPDATE CASCADE ON DELETE CASCADE
+  REFERENCES toDoLists(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 /*Table d'association utilisateurs + todolists lié
@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS `users_toDoLists` (
   `user_id` smallint(5) unsigned NOT NULL,
   `toDoList_id` smallint(5) unsigned NOT NULL,
   FOREIGN KEY users_toDoLists_fk1(user_id)
-  REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  REFERENCES users(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY users_toDoLists_fk2(toDoList_id)
-  REFERENCES toDoLists(id) ON UPDATE CASCADE ON DELETE CASCADE
+  REFERENCES toDoLists(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 /*Table des commentaires*/
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `user_id` smallint(5) unsigned NOT NULL,
   `text` text NOT NULL,
   FOREIGN KEY comments_fk1(task_id)
-  REFERENCES toDoActions(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  REFERENCES toDoActions(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY comments_fk2(user_id)
-  REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  REFERENCES users(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
