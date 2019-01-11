@@ -21,7 +21,7 @@
 			));
 			
 			//Message de confirmation
-			$_SESSION['message'] = '<div class="alert alert-dark mx-5" role="alert">Action supprimée avec succès!</div>';
+			$_SESSION['message'] = '<div class="alert alert-success mx-5" role="alert">Action ajoutée avec succès!</div>';
 
 			//Redirection
 			header('Location: ../todolist.php');
